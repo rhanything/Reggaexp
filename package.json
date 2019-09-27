@@ -1,0 +1,15 @@
+{
+  "name": "a",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "rhanys",
+  "license": "MIT",
+  "scripts": {
+    "lint": "./node_modules/.bin/eslint index.js",
+    "start": "npm run lint && node index.js"
+  },
+  "devDependencies": {
+    "eslint": "^6.4.0",
+    "eslint-config-google": "^0.14.0"
+  }
+}
