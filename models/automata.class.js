@@ -1,47 +1,66 @@
 module.exports = class Automata {
-  constructor() {
-    this.alphabet = [];
-    this.states = [];
-    this.initialState = '';
-    this.finalStates = [];
-    this.transitions = {};
-  }
+	/**
+	 ** @constructor
+	 */
+	constructor() {
+		this.alphabet = [];
+		this.states = [];
+		this.initialState = '';
+		this.finalStates = [];
+		this.transitions = {};
+	}
 
-  transitionFunction(state, symbol) {
-    return this.transitions[state][symbol];
-  }
+	/**
+	 *
+	 * @param {string} state
+	 * @param {string} symbol
+	 * @return {string}
+	 */
+	transitionFunction(state, symbol) {
+		return this.transitions[state][symbol];
+	}
 
-  extendedTransitionFunction(state, word) {
-    for (let i = 0; i < word.length; i++) {
-      const nextState = this.transitionFunction(state, word[i]);
+	/**
+	 *
+	 * @param {string} state
+	 * @param {string} word
+	 * @return {string}
+	 */
+	extendedTransitionFunction(state, word) {
+		for (let i = 0; i < word.length; i++) {
+			const nextState = this.transitionFunction(state, word[i]);
 
-      console.log(state + ' -> ', word);
-      console.log('next state: ', nextState);
-      console.log('\n');
+			console.log(state + ' -> ', word);
+			console.log('next state: ', nextState);
+			console.log('\n');
 
-      if (!nextState) {
-        return false;
-      }
+			if (!nextState) {
+				return false;
+			}
 
-      word = word.slice(1);
-      if (!word) {
-        return nextState;
-      }
-      return this.extendedTransitionFunction(nextState, word);
-    }
-  }
+			word = word.slice(1);
+			if (!word) {
+				return nextState;
+			}
+			return this.extendedTransitionFunction(nextState, word);
+		}
+	}
 
-  test(word) {
-    const stoppedState = this.extendedTransitionFunction(
-      this.initialState,
-      word,
-    );
-    console.log('stoppedState: ', stoppedState);
-    if (!this.finalStates.includes(stoppedState)) {
-      return false;
-    }
-    return true;
-  }
+	/**
+	 * @param {string} word
+	 * @return {string}
+	 */
+	test(word) {
+		const stoppedState = this.extendedTransitionFunction(
+			this.initialState,
+			word,
+		);
+		console.log('stoppedState: ', stoppedState);
+		if (!this.finalStates.includes(stoppedState)) {
+			return false;
+		}
+		return true;
+	}
 };
 
 // - encontrar o proximo estado
