@@ -4,20 +4,18 @@ const M = new Automata();
 M.alphabet = ['a', 'b'];
 M.states = ['q0', 'q1', 'q3'];
 M.initialState = 'q0';
-M.finalStates = ['q1', 'q3'];
+M.finalStates = ['q1'];
 M.transitions = {
 	q0: {
-		a: 'q0',
-		b: 'q1',
+		a: ['q1', 'q3'],
 	},
 	q1: {
-		a: 'q3',
-		b: 'q1',
+		b: ['q3'],
 	},
 	q3: {},
 };
 
-const result = M.test('bab');
+const result = M.test('ab');
 
 if (result) {
 	console.log('Has been Accepted.');

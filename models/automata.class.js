@@ -1,3 +1,4 @@
+const _ = require('lodash');
 module.exports = class Automata {
 	/**
 	 ** @constructor
@@ -22,28 +23,38 @@ module.exports = class Automata {
 
 	/**
 	 *
-	 * @param {string} state
+	 * @param {array} states
 	 * @param {string} word
 	 * @return {string}
 	 */
-	extendedTransitionFunction(state, word) {
-		for (let i = 0; i < word.length; i++) {
-			const nextState = this.transitionFunction(state, word[i]);
+	extendedTransitionFunction(states, word) {
+		// console.log(this.transitions);
+		// console.log('states: ', states);
+		return _.reduce(
+			states,
+			(result, state) => {
+				let wordForState = word;
+				for (let i = 0; i < word.length; i++) {
+					const nextState = this.transitionFunction(state, wordForState[i]);
 
-			console.log(state + ' -> ', word);
-			console.log('next state: ', nextState);
-			console.log('\n');
+					console.log(state + ' -> ', wordForState);
+					console.log('next state: ', nextState);
+					console.log('\n');
 
-			if (!nextState) {
-				return false;
-			}
+					if (!nextState) {
+						return false;
+					}
 
-			word = word.slice(1);
-			if (!word) {
-				return nextState;
-			}
-			return this.extendedTransitionFunction(nextState, word);
-		}
+					wordForState = wordForState.slice(1);
+					if (!wordForState) {
+						console.log(nextState);
+						return nextState;
+					}
+					return this.extendedTransitionFunction(nextState, wordForState);
+				}
+			},
+			[],
+		);
 	}
 
 	/**
@@ -51,15 +62,23 @@ module.exports = class Automata {
 	 * @return {string}
 	 */
 	test(word) {
-		const stoppedState = this.extendedTransitionFunction(
-			this.initialState,
+		const stoppedStates = this.extendedTransitionFunction(
+			[this.initialState],
 			word,
 		);
-		console.log('stoppedState: ', stoppedState);
-		if (!this.finalStates.includes(stoppedState)) {
+
+		if (!stoppedStates || !stoppedStates.length) {
 			return false;
 		}
-		return true;
+
+		console.log('stoppedStates: ', stoppedStates);
+		const result = stoppedStates.map((state) => {
+			if (this.finalStates.includes(state)) {
+				return state;
+			}
+		});
+
+		return result.length;
 	}
 };
 
