@@ -80,6 +80,34 @@ module.exports = class Automata {
 
 		return result.length;
 	}
+
+	// eslint-disable-next-line require-jsdoc
+	createState(isStart, isEnd) {
+		console.log('dbgtrans', this.transitions);
+		const newState = this.states.length;
+		console.log(newState);
+		this.states.push(newState);
+		this.transitions[newState] = {};
+
+		if (isStart) {
+			this.initialState = newState;
+		}
+
+		if (isEnd) {
+			this.finalStates.push(newState);
+		}
+		return newState;
+	}
+
+	// eslint-disable-next-line require-jsdoc
+	addTransition(from, to, symbol) {
+		_.set(this.transitions, [from, symbol], to);
+	}
+
+	// eslint-disable-next-line require-jsdoc
+	addEpsilonTransition(from, to) {
+		_.set(this.transitions, [from, 'ε'], to);
+	}
 };
 
 // - encontrar o proximo estado
