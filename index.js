@@ -1,44 +1,19 @@
-// const Automata = require('./models/automata.class');
-const {insertExplicitConcatOperator, toPostfix} = require('./regex');
-const {toNFA} = require('./automata');
-const CircularJSON = require('circular-json');
+const {insertExplicitConcatOperator, toPostfix} = require('./regexParse');
+const {toNFA, recognize} = require('./automata');
+const {server} = require('./server');
+const serverConfig = {
+	port: 3001,
+};
+const app = server(serverConfig);
 
-// const M = new Automata();
-// M.alphabet = ['a', 'b'];
-// M.states = ['q0', 'q1', 'q3'];
-// M.initialState = 'q0';
-// M.finalStates = ['q1'];
-// M.transitions = {
-// 	q0: {
-// 		a: ['q1', 'q3'],
-// 	},
-// 	q1: {
-// 		b: ['q3'],
-// 	},
-// 	q3: {},
-// };
-
-// const result = M.test('ab');
-
-// if (result) {
-// 	console.log('Has been Accepted.');
-// } else {
-// 	console.log('Has been Rejected.');
-// }
-
-// const exp = 'a*';
-const exp = 'a|b';
-// const exp = 'ab'
-
-const expWithConcatenationOperator = insertExplicitConcatOperator(exp);
-console.log(expWithConcatenationOperator);
-
-// Generates an NFA using a stack
-const postfixExp = toPostfix(expWithConcatenationOperator);
-console.log(postfixExp);
-const nfa = toNFA(postfixExp);
-
-// eslint-disable-next-line
-const nfaString = CircularJSON.stringify(nfa);
-
-console.table(nfaString);
+app.post('/match', (req, res) => {
+	// const exp = '(a|a|a(a*|b(a*)))';
+	const {regex, text} = req.body;
+	const expWithConcatenationOperator = insertExplicitConcatOperator(regex);
+	const postfixExp = toPostfix(expWithConcatenationOperator);
+	// Build NFA
+	const nfa = toNFA(postfixExp);
+	const words = text.split(' ');
+	const matchedWords = words.filter((word) => recognize(nfa, word));
+	res.send(matchedWords);
+});

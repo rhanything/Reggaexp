@@ -1,7 +1,3 @@
-/**
- * @param {string} exp
- * @return {void}
- */
 function insertExplicitConcatOperator(exp) {
 	let output = '';
 
@@ -27,7 +23,6 @@ function insertExplicitConcatOperator(exp) {
 	return output;
 }
 
-// eslint-disable-next-line require-jsdoc
 function peek(stack) {
 	return stack.length && stack[stack.length - 1];
 }
@@ -54,6 +49,7 @@ function toPostfix(exp) {
 			}
 
 			operatorStack.push(token);
+			console.log(operatorStack);
 		} else if (token === '(' || token === ')') {
 			if (token === '(') {
 				operatorStack.push(token);

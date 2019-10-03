@@ -1,23 +1,8 @@
-const CircularJSON = require('circular-json');
-
-// this.alphabet = [];
-// this.states = [];
-// this.initialState = '';
-// this.finalStates = [];
-// this.transitions = {};
-
+// const CircularJSON = require('circular-json');
 /*
-  Thompson NFA Construction and Search.
+  Thompson NFA Builder and Recognizer.
 */
 
-/*
-  A state in Thompson's NFA can either have
-   - a single symbol transition to a state
-    or
-   - up to two epsilon transitions to another states
-  but not both.
-*/
-// eslint-disable-next-line require-jsdoc
 function createState(isEnd) {
 	return {
 		isEnd,
@@ -26,23 +11,20 @@ function createState(isEnd) {
 	};
 }
 
-// eslint-disable-next-line require-jsdoc
 function addEpsilonTransition(from, to) {
 	from.epsilonTransitions.push(to);
 }
 /*
-Thompson's NFA state can have only one transition
-to another state for a given symbol.
+Um estado do NFA gerado pelo algoritmo de Thompson
+ pode ter apenas 1 transição de símbolo
 */
-// eslint-disable-next-line require-jsdoc
 function addTransition(from, to, symbol) {
 	from.transition[symbol] = to;
 }
 
 /*
-Construct an NFA that recognizes only the empty string.
+Constroi um NFA para reconhecer string vazia
 */
-// eslint-disable-next-line require-jsdoc
 function fromEpsilon() {
 	const start = createState(false);
 	const end = createState(true);
@@ -52,9 +34,8 @@ function fromEpsilon() {
 }
 
 /*
-Construct an NFA that recognizes only a single character string.
+Constroi um NFA que reconhece um símbolo/caracter
 */
-// eslint-disable-next-line require-jsdoc
 function fromSymbol(symbol) {
 	const start = createState(false);
 	const end = createState(true);
@@ -64,9 +45,8 @@ function fromSymbol(symbol) {
 }
 
 /*
-Concatenates two NFAs.
+Concatenação "."
 */
-// eslint-disable-next-line require-jsdoc
 function concat(first, second) {
 	addEpsilonTransition(first.end, second.start);
 	first.end.isEnd = false;
@@ -75,9 +55,8 @@ function concat(first, second) {
 }
 
 /*
-Unions two NFAs.
+União "|"
 */
-// eslint-disable-next-line require-jsdoc
 function union(first, second) {
 	const start = createState(false);
 	addEpsilonTransition(start, first.start);
@@ -94,9 +73,8 @@ function union(first, second) {
 }
 
 /*
-Apply Closure (Kleene's Star) on an NFA.
+Aplica feixe transitivo quando operador estrela "*"
 */
-// eslint-disable-next-line require-jsdoc
 function closure(nfa) {
 	const start = createState(false);
 	const end = createState(true);
@@ -112,9 +90,8 @@ function closure(nfa) {
 }
 
 /*
-Converts a postfix regular expression into a Thompson NFA.
+Converte um regex posfixo em NFA usando o algoritmo de Thompson
 */
-// eslint-disable-next-line require-jsdoc
 function toNFA(postfixExp) {
 	if (postfixExp === '') {
 		return fromEpsilon();
@@ -141,11 +118,22 @@ function toNFA(postfixExp) {
 	return stack.pop();
 }
 
-// eslint-disable-next-line require-jsdoc
+function addNextState(state, nextStates, visited) {
+	if (state.epsilonTransitions.length) {
+		for (const st of state.epsilonTransitions) {
+			if (!visited.find((vs) => vs === st)) {
+				visited.push(st);
+				addNextState(st, nextStates, visited);
+			}
+		}
+	} else {
+		nextStates.push(state);
+	}
+}
+
 function search(nfa, word) {
 	let currentStates = [];
-	/* The initial set of current states is either the start state or
-	the set of states reachable by epsilon transitions from the start state */
+
 	addNextState(nfa.start, currentStates, []);
 
 	for (const symbol of word) {
@@ -164,9 +152,7 @@ function search(nfa, word) {
 	return currentStates.find((s) => s.isEnd) ? true : false;
 }
 
-// eslint-disable-next-line require-jsdoc
 function recognize(nfa, word) {
-	// return recursiveBacktrackingSearch(nfa.start, [], word, 0);
 	return search(nfa, word);
 }
 
