@@ -23,17 +23,6 @@ function addTransition(from, to, symbol) {
 }
 
 /*
-Constroi um NFA para reconhecer string vazia
-*/
-function fromEpsilon() {
-	const start = createState(false);
-	const end = createState(true);
-	addEpsilonTransition(start, end);
-
-	return {start, end};
-}
-
-/*
 Constroi um NFA que reconhece um símbolo/caracter
 */
 function fromSymbol(symbol) {
@@ -79,11 +68,11 @@ function closure(nfa) {
 	const start = createState(false);
 	const end = createState(true);
 
-	addEpsilonTransition(start, end);
-	addEpsilonTransition(start, nfa.start);
+	addEpsilonTransition(start, end); // nenhuma
+	addEpsilonTransition(start, nfa.start); // uma
 
 	addEpsilonTransition(nfa.end, end);
-	addEpsilonTransition(nfa.end, nfa.start);
+	addEpsilonTransition(nfa.end, nfa.start); // mais de uma
 	nfa.end.isEnd = false;
 
 	return {start, end};
@@ -93,10 +82,6 @@ function closure(nfa) {
 Converte um regex posfixo em NFA usando o algoritmo de Thompson
 */
 function toNFA(postfixExp) {
-	if (postfixExp === '') {
-		return fromEpsilon();
-	}
-
 	const stack = [];
 
 	for (const token of postfixExp) {

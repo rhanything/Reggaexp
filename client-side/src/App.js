@@ -16,7 +16,6 @@ function App() {
 		const response = await post(urlApi + stringMatchPath, reqBody).then(
 			(response) => response.data,
 		);
-		console.log(response);
 		setWordsMatched(response);
 	};
 	return (

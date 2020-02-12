@@ -10,7 +10,9 @@ app.post('/match', (req, res) => {
 	// const exp = '(a|a|a(a*|b(a*)))';
 	const {regex, text} = req.body;
 	const expWithConcatenationOperator = insertExplicitConcatOperator(regex);
+	console.log(expWithConcatenationOperator);
 	const postfixExp = toPostfix(expWithConcatenationOperator);
+	console.log(postfixExp);
 	// Build NFA
 	const nfa = toNFA(postfixExp);
 	const words = text.split(' ');

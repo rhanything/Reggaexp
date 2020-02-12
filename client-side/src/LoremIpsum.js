@@ -7,4 +7,4 @@
 
 // Auctor augue mauris augue neque gravida in fermentum. Quam pellentesque nec nam aliquam sem. Rutrum quisque non tellus orci ac auctor augue mauris. Feugiat nibh sed pulvinar proin. Adipiscing diam donec adipiscing tristique risus nec feugiat in fermentum. Fermentum leo vel orci porta non. At lectus urna duis convallis convallis. Diam volutpat commodo sed egestas. Aliquet nibh praesent tristique magna sit. Vel eros donec ac odio. Lorem ipsum dolor sit amet. Non arcu risus quis varius quam quisque id diam. Curabitur vitae nunc sed velit dignissim sodales ut. Convallis convallis tellus id interdum velit. Risus nec feugiat in fermentum posuere urna nec. Lectus magna fringilla urna porttitor. Nam aliquam sem et tortor consequat id porta. Tellus in metus vulputate eu scelerisque felis imperdiet. Ut venenatis tellus in metus vulputate. Vehicula ipsum a arcu cursus vitae congue mauris.`;
 
-export const LoremIpsum = `a aa aaa aaaa aaaaaaaaaaaaaaaaa b bb bbbb bbbbbbb bbbb abababababa abbbaa  abaa abab abbb baaa ab`;
+export const LoremIpsum = `abab`;

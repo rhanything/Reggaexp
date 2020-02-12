@@ -49,7 +49,6 @@ function toPostfix(exp) {
 			}
 
 			operatorStack.push(token);
-			console.log(operatorStack);
 		} else if (token === '(' || token === ')') {
 			if (token === '(') {
 				operatorStack.push(token);
